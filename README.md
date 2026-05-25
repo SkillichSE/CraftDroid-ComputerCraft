@@ -1,5 +1,7 @@
 # CraftDroid OS
 
+<img width="481" height="552" alt="Image" src="https://github.com/user-attachments/assets/87196dc7-5d45-461a-803f-356e50201f25" />
+
 CraftDroid is a compact phone-style operating system for ComputerCraft. It has a lock screen, app launcher, file manager, notes, paint, contacts, settings and a few small utility apps.
 
 The goal is simple: make a ComputerCraft computer feel like a tiny handheld OS.
