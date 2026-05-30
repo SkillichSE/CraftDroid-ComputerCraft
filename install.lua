@@ -1,7 +1,5 @@
--- CraftDroid Beta 1.0 Installer
---   wget https://raw.githubusercontent.com/SkillichSE/CraftDroid-ComputerCraft/main/install.lua install.lua
---   install.lua
-
+--wget https://raw.githubusercontent.com/SkillichSE/CraftDroid-ComputerCraft/main/install.lua install.lua
+--install.lua
 local BASE = "https://raw.githubusercontent.com/SkillichSE/CraftDroid-ComputerCraft/main/"
 
 local FILES = {
@@ -44,27 +42,18 @@ term.setBackgroundColor(colors.black)
 term.clear()
 term.setCursorPos(1, 1)
 term.setTextColor(colors.yellow)
-print("================================")
-print("   CraftDroid Beta 1.0")
-print("   Installer")
-print("================================")
-term.setTextColor(colors.white)
+print("CraftDroid Beta 1.0 Installer")
 print("")
+term.setTextColor(colors.white)
 
 if not http then
     term.setTextColor(colors.red)
-    print("HTTP API отключен!")
-    print("Включи http в настройках сервера.")
+    print("HTTP API is disabled.")
+    print("Enable http in server settings.")
     return
 end
 
-local DIRS = {
-    "craftdroid",
-    "craftdroid/apps",
-    "craftdroid/data",
-    "appdata",
-    "pictures",
-}
+local DIRS = { "craftdroid", "craftdroid/apps", "craftdroid/data", "appdata", "pictures" }
 for _, dir in ipairs(DIRS) do
     if not fs.exists(dir) then fs.makeDir(dir) end
 end
@@ -76,14 +65,12 @@ local failed = {}
 for i, path in ipairs(FILES) do
     term.setTextColor(colors.lightGray)
     term.write("[" .. i .. "/" .. #FILES .. "] " .. path .. " ... ")
-
-    local res, err = http.get(BASE .. path)
+    local res = http.get(BASE .. path)
     if res then
-        local content = res.readAll()
-        res.close()
         local f = fs.open(path, "w")
-        f.write(content)
+        f.write(res.readAll())
         f.close()
+        res.close()
         term.setTextColor(colors.green)
         print("OK")
         ok_count = ok_count + 1
@@ -98,21 +85,21 @@ end
 print("")
 if fail_count == 0 then
     term.setTextColor(colors.green)
-    print("Установка завершена! " .. ok_count .. " файлов.")
+    print("Done! " .. ok_count .. " files installed.")
     term.setTextColor(colors.white)
     print("")
-    term.setTextColor(colors.yellow)
-    write("Перезагрузить сейчас? [y/n]: ")
+    write("Reboot now? [y/n]: ")
     local ans = read()
     if ans == "y" or ans == "Y" then os.reboot() end
 else
     term.setTextColor(colors.orange)
-    print("Установлено: " .. ok_count .. "  Ошибок: " .. fail_count)
+    print("Installed: " .. ok_count .. "  Failed: " .. fail_count)
     print("")
     term.setTextColor(colors.red)
-    print("Не удалось скачать:")
+    print("Could not download:")
     for _, p in ipairs(failed) do print("  - " .. p) end
     term.setTextColor(colors.white)
     print("")
-    print("Проверь подключение к интернету.")
+    print("Check your internet connection.")
+    print("Some files may be missing from GitHub.")
 end
